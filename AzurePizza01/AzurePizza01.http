@@ -1,0 +1,6 @@
+@AzurePizza01_HostAddress = http://localhost:5225
+
+GET {{AzurePizza01_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
