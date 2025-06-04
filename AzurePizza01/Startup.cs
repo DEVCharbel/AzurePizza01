@@ -44,7 +44,7 @@ namespace AzurePizza01
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            // 3) JWT-autentisering
+            // 3) JWT‐autentisering
             var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
             services.AddAuthentication(options =>
             {
@@ -67,7 +67,7 @@ namespace AzurePizza01
                 };
             });
 
-            // 4) CORS (utveckling)
+            // 4) CORS (endast för utveckling)
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -80,7 +80,7 @@ namespace AzurePizza01
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                // Definiera “Bearer”-token i Swagger
+                // Definiera “Bearer”–token i Swagger
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Sätt in din JWT-token här. Format: \"Bearer {din token}\"",
@@ -107,7 +107,7 @@ namespace AzurePizza01
                 });
             });
 
-            // 6) JWT token service
+            // 6) JWT-token‐service
             services.AddScoped<IJwtTokenService, JwtTokenService>();
         }
 
@@ -141,6 +141,14 @@ namespace AzurePizza01
 
             app.UseEndpoints(endpoints =>
             {
+                // Omdirigera "/" → "/swagger/index.html"
+                endpoints.MapGet("/", context =>
+                {
+                    context.Response.Redirect("/swagger/index.html");
+                    return Task.CompletedTask;
+                });
+
+                // Mappar alla API-controllers
                 endpoints.MapControllers();
             });
         }
